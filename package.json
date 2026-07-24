@@ -1,0 +1,13 @@
+{
+  "name": "smi-serang-studio",
+  "private": true,
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build"
+  },
+  "dependencies": {
+    "sanity": "^3.0.0",
+    "styled-components": "^5.3.6"
+  }
+}
