@@ -1,4 +1,7 @@
 import unit from './unit'
 import prestasi from './prestasi'
 
-export const schemaTypes = [unit, prestasi]
+export const schemaTypes = [
+  unit,
+  prestasi
+]
