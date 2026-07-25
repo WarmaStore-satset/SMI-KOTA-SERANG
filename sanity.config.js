@@ -7,7 +7,7 @@ export default defineConfig({
   name: 'default',
   title: 'SMI Komwil Kota Serang',
 
-  projectId: 'PROJECT_ID_LO',
+  projectId: 'r6yz1q11',
   dataset: 'production',
 
   plugins: [structureTool()],
