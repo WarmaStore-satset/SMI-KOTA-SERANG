@@ -1,35 +1,42 @@
-export default {
+import {defineField, defineType} from 'sanity'
+
+export default defineType({
+
   name: 'prestasi',
-  title: 'Hall of Fame Prestasi',
+
+  title: 'Hall of Fame',
+
   type: 'document',
+
   fields: [
-    {
+
+    defineField({
       name: 'namaAtlet',
       title: 'Nama Atlet',
-      type: 'string',
-      validation: Rule => Rule.required()
-    },
-    {
-      name: 'namaKejuaraan',
+      type: 'string'
+    }),
+
+    defineField({
+      name: 'kejuaraan',
       title: 'Kejuaraan / Medali',
-      type: 'string',
-      placeholder: 'Contoh: Juara 1 POPDA Banten 2025',
-      validation: Rule => Rule.required()
-    },
-    {
-      name: 'unitSekolah',
-      title: 'Asal Unit / Sekolah',
-      type: 'string',
-      placeholder: 'Contoh: SMAN 6 Kota Serang'
-    },
-    {
+      type: 'string'
+    }),
+
+    defineField({
+      name: 'asalUnit',
+      title: 'Asal Unit',
+      type: 'string'
+    }),
+
+    defineField({
       name: 'fotoAtlet',
       title: 'Foto Atlet',
       type: 'image',
       options: {
         hotspot: true
-      },
-      validation: Rule => Rule.required()
-    }
+      }
+    })
+
   ]
-}
+
+})
