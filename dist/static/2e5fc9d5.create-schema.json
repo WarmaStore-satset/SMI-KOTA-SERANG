@@ -1,0 +1,112 @@
+[
+  {
+    "fields": [
+      {
+        "name": "namaSekolah",
+        "type": "string"
+      },
+      {
+        "options": {
+          "source": "namaSekolah",
+          "maxLength": 96
+        },
+        "validation": [
+          {
+            "rules": [
+              {
+                "flag": "custom"
+              }
+            ],
+            "level": "error"
+          }
+        ],
+        "name": "slug",
+        "type": "slug"
+      },
+      {
+        "options": {
+          "list": [
+            {
+              "title": "SD",
+              "value": "SD"
+            },
+            {
+              "title": "SMP",
+              "value": "SMP"
+            },
+            {
+              "title": "SMA",
+              "value": "SMA"
+            },
+            {
+              "title": "Umum",
+              "value": "Umum"
+            }
+          ]
+        },
+        "name": "tingkat",
+        "type": "string"
+      },
+      {
+        "name": "tahunAktif",
+        "type": "number"
+      },
+      {
+        "name": "pelatih",
+        "type": "string"
+      },
+      {
+        "name": "jadwal",
+        "type": "text",
+        "title": "Jadwal Latihan"
+      },
+      {
+        "name": "lokasi",
+        "type": "string"
+      },
+      {
+        "name": "waPelatih",
+        "type": "string",
+        "title": "WhatsApp Pelatih"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "banner",
+        "type": "image",
+        "title": "Foto Banner"
+      }
+    ],
+    "name": "unit",
+    "type": "document",
+    "title": "Unit Latihan"
+  },
+  {
+    "fields": [
+      {
+        "name": "namaAtlet",
+        "type": "string"
+      },
+      {
+        "name": "kejuaraan",
+        "type": "string",
+        "title": "Kejuaraan / Medali"
+      },
+      {
+        "name": "asalUnit",
+        "type": "string"
+      },
+      {
+        "options": {
+          "hotspot": true
+        },
+        "name": "fotoAtlet",
+        "type": "image"
+      }
+    ],
+    "name": "prestasi",
+    "type": "document",
+    "title": "Hall of Fame"
+  }
+]
