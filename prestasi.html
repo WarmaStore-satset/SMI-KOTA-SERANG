@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Prestasi - SMI Komwil Kota Serang</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #cc0000;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .navbar h1 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-back {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0,0,0,0.2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            background: rgba(0,0,0,0.4);
+        }
+
+        /* HEADER & SEARCH BAR */
+        .header-section {
+            text-align: center;
+            padding: 30px 15px 20px 15px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header-section h2 {
+            color: #cc0000;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .header-section p {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            max-width: 450px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: #cc0000;
+            box-shadow: 0 0 8px rgba(204, 0, 0, 0.2);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* CONTAINER RUNNING MULTI-ROW (MARQUEE) */
+        .marquee-section {
+            padding: 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        .marquee-row {
+            display: flex;
+            gap: 12px;
+            width: max-content;
+            user-select: none;
+        }
+
+        /* ANIMASI ZIGZAG */
+        .run-right {
+            animation: scrollRight 35s linear infinite;
+        }
+
+        .run-left {
+            animation: scrollLeft 35s linear infinite;
+        }
+
+        @keyframes scrollRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes scrollLeft {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* CONTAINER GRID SAAT SEARCH */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 20px 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+        }
+
+        /* DESAIN KARTU PRESTASI COMPACT */
+        .card-prestasi {
+            min-width: 145px;
+            max-width: 145px;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1.5px solid #cc0000;
+            box-shadow: 0 2px 8px rgba(204, 0, 0, 0.25);
+            transition: transform 0.3s ease;
+        }
+
+        /* Penyesuaian Kartu jika di Mode Grid Search */
+        .grid-container .card-prestasi {
+            min-width: 100%;
+            max-width: 100%;
+        }
+
+        .card-prestasi img {
+            width: 100%;
+            height: 135px;
+            object-fit: cover;
+            background: #eee;
+        }
+
+        .card-info {
+            padding: 8px 6px;
+            text-align: center;
+        }
+
+        .card-info h4 {
+            font-size: 0.82rem;
+            color: #cc0000;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-info p {
+            font-size: 0.72rem;
+            color: #444;
+            line-height: 1.2;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-info .unit-tag {
+            font-size: 0.68rem;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* FOOTER SIMPEL */
+        .footer-simple {
+            text-align: center;
+            padding: 20px;
+            background: #111;
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <h1>SMI KOTA SERANG</h1>
+        <a href="index.html" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Kembali
+        </a>
+    </nav>
+
+    <!-- HEADER & SEARCH -->
+    <section class="header-section">
+        <h2>Direktori Atlet Berprestasi</h2>
+        <p>Dokumentasi Kejuaraan & Prestasi Anggota SMI Kota Serang</p>
+
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Cari nama atlet, unit, kejuaraan...">
+        </div>
+    </section>
+
+    <!-- KONTEN MODE RUNNING MARQUEE ZIGZAG -->
+    <div id="marqueeContainer" class="marquee-section">
+        <p style="text-align:center; color:#777; width:100%;">Memuat seluruh data prestasi...</p>
+    </div>
+
+    <!-- KONTEN MODE GRID (HANYA MUNCUL SAAT SEARCH) -->
+    <div id="gridContainer" class="grid-container" style="display: none;"></div>
+
+    <!-- FOOTER -->
+    <footer class="footer-simple">
+        © 2026 SMI Komwil Kota Serang. All Rights Reserved.
+    </footer>
+
+    <script>
+        const PROJECT_ID = 'r6yz1q11';
+        const DATASET = 'production';
+
+        let allPrestasiData = [];
+
+        // 1. FETCH SEMUA DATA PRESTASI DARI SANITY
+        async function fetchAllPrestasi() {
+            const query = encodeURIComponent(`*[_type == "prestasi"] | order(_createdAt desc){
+                namaAtlet,
+                kejuaraan,
+                asalUnit,
+                "fotoUrl": fotoAtlet.asset->url
+            }`);
+
+            const url = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${query}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                allPrestasiData = data.result || [];
+
+                if (allPrestasiData.length === 0) {
+                    document.getElementById('marqueeContainer').innerHTML =
+                        '<p style="text-align:center; color:#777;">Belum ada data prestasi di Sanity.</p>';
+                    return;
+                }
+
+                // Render tampilan default (Zigzag Running)
+                renderZigzagMarquee(allPrestasiData);
+
+            } catch (e) {
+                document.getElementById('marqueeContainer').innerHTML =
+                    '<p style="text-align:center; color:#cc0000;">Gagal memuat data dari database.</p>';
+                console.error(e);
+            }
+        }
+
+        // 2. LOGIKA RENDER ZIGZAG RUNNING MARQUEE (PER 10 KARTU)
+        function renderZigzagMarquee(data) {
+            const container = document.getElementById('marqueeContainer');
+            container.innerHTML = '';
+
+            // Pecah data per 10 items
+            const chunkSize = 10;
+            const rows = [];
+            for (let i = 0; i < data.length; i += chunkSize) {
+                rows.push(data.slice(i, i + chunkSize));
+            }
+
+            rows.forEach((rowItems, index) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.style.overflow = 'hidden';
+                rowDiv.style.width = '100%';
+
+                const isEven = index % 2 === 1; // Genap = Jalan ke Kanan, Ganjil = Kiri
+                const animClass = isEven ? 'run-right' : 'run-left';
+
+                const cardsHTML = rowItems.map(p => createCardHTML(p)).join('');
+
+                // Duplikasi HTML 2x biar running loop halus tanpa jeda
+                rowDiv.innerHTML = `
+                    <div class="marquee-row ${animClass}">
+                        ${cardsHTML}
+                        ${cardsHTML}
+                    </div>
+                `;
+
+                container.appendChild(rowDiv);
+            });
+        }
+
+        // 3. EFEK SEARCH (PINDAH DARI ZIGZAG KE GRID KATALOG)
+        function handleSearch() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+            const marqueeContainer = document.getElementById('marqueeContainer');
+            const gridContainer = document.getElementById('gridContainer');
+
+            if (keyword === '') {
+                // Kalau pencarian kosong, balikkan ke mode Zigzag Running Marquee
+                marqueeContainer.style.display = 'flex';
+                gridContainer.style.display = 'none';
+            } else {
+                // Kalau ada ketikan, pindah ke mode Grid Statis
+                marqueeContainer.style.display = 'none';
+                gridContainer.style.display = 'grid';
+
+                const filtered = allPrestasiData.filter(p => {
+                    const nama = (p.namaAtlet || '').toLowerCase();
+                    const kejuaraan = (p.kejuaraan || '').toLowerCase();
+                    const unit = (p.asalUnit || '').toLowerCase();
+                    return nama.includes(keyword) || kejuaraan.includes(keyword) || unit.includes(keyword);
+                });
+
+                if (filtered.length === 0) {
+                    gridContainer.innerHTML = `
+                        <p style="grid-column: 1/-1; text-align:center; color:#777; padding: 30px 0;">
+                            Tidak ditemukan atlet/prestasi dengan kata kunci "${keyword}"
+                        </p>
+                    `;
+                } else {
+                    gridContainer.innerHTML = filtered.map(p => createCardHTML(p)).join('');
+                }
+            }
+        }
+
+        // HELPER RENDER KARTU
+        function createCardHTML(p) {
+            return `
+                <div class="card-prestasi">
+                    <img src="${p.fotoUrl || 'https://via.placeholder.com/150'}" alt="${p.namaAtlet}">
+                    <div class="card-info">
+                        <h4>${p.namaAtlet || 'Atlet SMI'}</h4>
+                        <p>${p.kejuaraan || '-'}</p>
+                        <p class="unit-tag">📍 ${p.asalUnit || '-'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // JALANKAN SAAT HALAMAN DIBUKA
+        document.addEventListener('DOMContentLoaded', fetchAllPrestasi);
+    </script>
+</body>
+</html>
