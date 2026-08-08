@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMI Komwil Kota Serang</title>
+
+    <!-- Font Awesome CDN untuk Icon Media Sosial & Kontak -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #f8f9fa; color: #333; overflow-x: hidden; }
+
+        /* Navbar */
+        .navbar {
+            background: #cc0000; color: white; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar h1 { font-size: 1.1rem; letter-spacing: 1px; }
+        .menu-icon { font-size: 1.5rem; cursor: pointer; }
+
+        /* Mobile Nav Dropdown */
+        .nav-menu {
+            display: none; background: #a30000; position: absolute;
+            top: 100%; left: 0; width: 100%; text-align: center;
+        }
+        .nav-menu a { display: block; padding: 12px; color: white; text-decoration: none; border-bottom: 1px solid #c00; }
+        .nav-menu.active { display: block; }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url('LOGOSMI.jpeg') center/cover;
+            color: white;
+            text-align: center;
+            padding: 70px 20px;
+            overflow: hidden; /* Mencegah scrollbar muncul saat animasi jalan */
+        }
+
+        .hero h2 {
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            /* ANIMASI UNTUK JUDUL UTAMA (DARI ATAS) */
+            animation: slideFromTop 1s ease-out forwards;
+        }
+
+        .hero p {
+            font-size: 0.9rem;
+            color: #ffcccc;
+            /* ANIMASI UNTUK SUB-JUDUL (DARI ATAS - TERTUNDA DIKIT) */
+            animation: slideFromTop 1s ease-out 0.3s forwards;
+            opacity: 0; /* Sembunyi dulu sebelum animasi jalan */
+        }
+
+        /* KEYFRAMES ANIMASI DARI ATAS */
+        @keyframes slideFromTop {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Layout */
+        .section { padding: 35px 20px; max-width: 900px; margin: 0 auto; }
+        .section-title { color: #cc0000; text-align: center; margin-bottom: 20px; font-size: 1.4rem; text-transform: uppercase; }
+
+        /* Jaringan Unit */
+        .unit-group { margin-bottom: 25px; }
+        .unit-group h3 { background: #e9ecef; padding: 8px 12px; border-left: 4px solid #cc0000; margin-bottom: 10px; font-size: 1rem; }
+        .unit-list { list-style: none; }
+        .unit-list li { padding: 10px 0; border-bottom: 1px dashed #ddd; }
+        .unit-list a { color: #333; text-decoration: none; font-weight: 600; display: block; }
+        .unit-list a:hover { color: #cc0000; }
+
+        /* Horizontal Scroll Prestasi (Compact + Non-Stop Infinite) */
+        .scroll-container {
+            display: flex;
+            gap: 12px;
+            overflow-x: hidden; /* Hilangkan scrollbar manual biar mulus */
+            padding: 10px 5px 15px 5px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            user-select: none; /* Biar pas ketouch ga ke-highlight teksnya */
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card-prestasi {
+            min-width: 145px;
+            max-width: 145px;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+
+            /* EFEK BORDER MERAH BERCAHAYA HALUS */
+            border: 1.5px solid #cc0000;
+            box-shadow: 0 2px 8px rgba(204, 0, 0, 0.25);
+            transition: transform 0.3s ease;
+        }
+
+        .card-prestasi img {
+            width: 100%;
+            height: 135px;
+            object-fit: cover;
+            background: #eee;
+        }
+
+        .card-info {
+            padding: 8px 6px;
+            text-align: center;
+        }
+
+        .card-info h4 {
+            font-size: 0.82rem;
+            color: #cc0000;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* Bikin teks kepotong rapi ... jika kepanjangan */
+        }
+
+        .card-info p {
+            font-size: 0.72rem;
+            color: #444;
+            line-height: 1.2;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-info .unit-tag {
+            font-size: 0.68rem;
+            color: #888;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Tombol CTA Lihat Semua Prestasi */
+        .btn-lihat-semua {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 22px;
+            background: #cc0000;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 25px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(204, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-lihat-semua:hover {
+            background: #990000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(204, 0, 0, 0.5);
+        }
+
+        /* Profil / Struktur Organisasi */
+        .struktur-organisasi {
+            width: 100%;
+            display: block;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        /* ================= ANIMASI SCROLL ================= */
+        /* 1. Profil (Muncul dari Kiri ke Kanan) */
+        .anim-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: all 0.8s ease-out;
+        }
+
+        /* 2. Gambar Struktur (Muncul dari Kanan ke Kiri) */
+        .anim-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: all 0.8s ease-out;
+        }
+
+        /* 3. Jaringan Unit & Elemen Lain (Muncul dari Bawah ke Atas) */
+        .anim-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+
+        /* CLASS AKTIF (Dipanggil JS saat elemen di-scroll) */
+        .anim-show {
+            opacity: 1 !important;
+            transform: translate(0, 0) !important;
+        }
+
+        /* ================= FOOTER MODERN ================= */
+        /* Layout Judul + Logo Footer */
+        .footer-brand {
+            display: flex;
+            align-items: center; /* Membuat teks sejajar pas di tengah vertikal logo */
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .footer-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0; /* Mencegah logo ikut gepeng */
+        }
+
+        .footer-brand h2 {
+            margin-bottom: 0;
+            font-size: 0.85rem; /* Ukuran pas biar muat 1 baris */
+            line-height: 1.2;
+            white-space: nowrap; /* Mencegah teks turun ke bawah / patah baris */
+        }
+
+        .footer {
+            background: #0f0f0f;
+            color: #fff;
+            margin-top: 50px;
+            padding: 50px 20px 20px;
+        }
+
+        .footer-container {
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 35px;
+        }
+
+        .footer h2 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 0.82rem;
+            letter-spacing: 0.5px;
+        }
+
+        .footer h3 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .footer p {
+            color: #cfcfcf;
+            line-height: 1.7;
+            font-size: 0.92rem;
+            margin-bottom: 8px;
+        }
+
+        .footer a {
+            color: #cfcfcf;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer a:hover {
+            color: #ffffff;
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-contact i {
+            color: #cc0000;
+            width: 18px;
+            text-align: center;
+        }
+
+        /* Media Sosial Icons */
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Media Sosial Icons */
+        .social-icons {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-icons a {
+            width: 45px;
+            height: 45px;
+            background: #1b1b1b;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .social-icons a:hover {
+            background: #cc0000;
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 5px 15px rgba(204, 0, 0, 0.4);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 35px;
+            padding-top: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        @media(max-width: 768px) {
+            .footer {
+                padding: 40px 20px 20px;
+            }
+            .footer-container {
+                gap: 25px;
+            }
+            .footer h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* ================= BANNER CAROUSEL / SLIDER ================= */
+        .carousel-container-box {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            background: #000;
+            margin-bottom: 20px;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 220px; /* Tinggi landscape pas untuk HP */
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .carousel-slide {
+                height: 350px; /* Tinggi landscape untuk Laptop/Desktop */
+            }
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.75); /* Biar teks di atasnya keliatan kontras */
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+        }
+
+        .carousel-caption h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        @media (min-width: 768px) {
+            .carousel-caption h3 {
+                font-size: 1.2rem;
+            }
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.4);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: #cc0000;
+        }
+
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 12px;
+            right: 15px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dot.active {
+            background: #cc0000;
+            width: 22px;
+            border-radius: 4px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>SMI KOMWIL KOTA SERANG</h1>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <div class="nav-menu" id="navMenu">
+            <a href="#profil" onclick="toggleMenu()">Profil Organisasi</a>
+            <a href="#unit" onclick="toggleMenu()">Unit Latihan</a>
+            <a href="#prestasi" onclick="toggleMenu()">Prestasi</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h2>PENCAK SILAT SATRIA MUDA INDONESIA</h2>
+        <p>Komwil Kota Serang</p>
+    </header>
+
+
+    <!-- BANNER CAROUSEL (3 Slide Landscape) -->
+    <section class="section" style="padding-bottom: 10px;">
+        <div class="carousel-container-box">
+            <div id="carousel-track" class="carousel-track">
+                <!-- Slide 1 -->
+                <div class="carousel-slide">
+                    <img src="LOGOSMI.jpeg" alt="Kegiatan 1">
+                    <div class="carousel-caption">
+                        <h3>Latihan Gabungan SMI Komwil Kota Serang</h3>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-slide">
+                    <img src="LOGOSMI.jpeg" alt="Kegiatan 2">
+                    <div class="carousel-caption">
+                        <h3>Pembinaan Atlet Berbakat & Berprestasi</h3>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-slide">
+                    <img src="LOGOSMI.jpeg" alt="Kegiatan 3">
+                    <div class="carousel-caption">
+                        <h3>Pencak Silat Satria Muda Indonesia</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Panah Kiri & Kanan (Manual) -->
+            <button class="carousel-btn prev-btn" onclick="moveSlide(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="carousel-btn next-btn" onclick="moveSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+
+            <!-- Indikator Titik -->
+            <div class="carousel-dots">
+                <span class="dot active" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+            </div>
+        </div>
+    </section>
+
+    <section id="profil" class="section" style="overflow: hidden;">
+        <!-- ANIMASI KIRI KE KANAN -->
+        <h2 class="section-title anim-left">Profil Organisasi</h2>
+        <p class="anim-left" style="text-align:justify; line-height:1.6; margin-bottom:15px;">
+            Perguruan Pencak Silat Satria Muda Indonesia (PPS SMI) merupakan pengembangan dari Perguruan Silat "Baringin Sakti" yang didirikan pada tahun 1955 oleh tiga pemuda Minang, yaitu H. Abu Zahar, H. Oemar Mantup (Mayor Laut), dan G.M.S. Lebe. Gagasan nama "Satria Muda Indonesia" dicetuskan oleh H. Prabowo Subianto (Letjen TNI Purnawirawan), sebelum akhirnya PPS SMI resmi didirikan pada 19 Juli 1987 di Lembah Pinus Ciloto, Jawa Barat, oleh para generasi muda murid Alm. H. Abu Zahar.
+        </p>
+        <p class="anim-left" style="text-align:justify; line-height:1.6; margin-bottom:25px;">
+            Sebagai salah satu perguruan besar yang tergabung dalam Ikatan Pencak Silat Indonesia (IPSI), SMI Komwil Kota Serang berfokus membumikan pencak silat di sekolah-sekolah serta melahirkan atlet-atlet bertalenta tinggi untuk mengharumkan nama Kota Serang.
+        </p>
+
+        <!-- ANIMASI KANAN KE KIRI -->
+        <h2 class="section-title anim-right">Struktur Organisasi</h2>
+        <img
+            src="images/struktur-organisasi.png"
+            alt="Struktur Organisasi SMI Komwil Kota Serang"
+            class="struktur-organisasi anim-right">
+    </section>
+
+    <!-- ANIMASI BAWAH KE ATAS -->
+    <section id="unit" class="section anim-up">
+        <h2 class="section-title">Jaringan Unit Latihan</h2>
+        <div id="loading-unit" style="text-align:center;">Memuat data unit...</div>
+        <div id="unit-container"></div>
+    </section>
+
+    <section id="prestasi" class="section anim-up" style="text-align: center;">
+        <h2 class="section-title">Prestasi Gemilang</h2>
+        <div class="scroll-container" id="prestasi-container">
+            <p id="loading-prestasi" style="text-align:center; width:100%;">Memuat prestasi...</p>
+        </div>
+
+        <!-- Tombol mengarah ke halaman semua prestasi -->
+        <a href="prestasi.html" class="btn-lihat-semua">
+            🏆 Lihat Semua Prestasi (50+ Atlet) <i class="fa-solid fa-arrow-right" style="margin-left:5px;"></i>
+        </a>
+    </section>
+
+    <!-- FOOTER MODERN -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Bagian 1: Deskripsi Singkat -->
+            <div class="footer-about">
+                <div class="footer-brand">
+                    <img src="LOGOSMI.jpeg" alt="Logo SMI" class="footer-logo">
+                    <h2>SMI KOMWIL KOTA SERANG</h2>
+                </div>
+                <p>
+                    SMI Komwil Kota Serang merupakan organisasi Pencak Silat
+                    Satria Muda Indonesia yang berkomitmen membina karakter,
+                    prestasi, serta melestarikan seni bela diri pencak silat
+                    melalui jaringan unit latihan di Kota Serang.
+                </p>
+            </div>
+
+            <!-- Bagian 2: Kontak Sekretariat -->
+            <div class="footer-contact">
+                <h3>KONTAK SEKRETARIAT</h3>
+                <p><i class="fa-solid fa-location-dot"></i> Kota Serang, Provinsi Banten</p>
+                <p>
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <a href="https://wa.me/6283159442626" target="_blank">0831-5944-2626</a>
+                </p>
+                <p>
+                    <i class="fa-regular fa-envelope"></i>
+                    <a href="mailto:smikotaserang61@gmail.com">smikotaserang61@gmail.com</a>
+                </p>
+            </div>
+
+            <!-- Bagian 3: Media Sosial Resmi -->
+            <div class="footer-social">
+                <h3>MEDIA SOSIAL RESMI</h3>
+                <div class="social-icons">
+                    <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://facebook.com" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://youtube.com" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 SMI Komwil Kota Serang. All Rights Reserved.
+        </div>
+    </footer>
+    <script>
+        const PROJECT_ID = 'r6yz1q11';
+        const DATASET = 'production';
+
+        let autoScrollInterval = null;
+        let slideIndex = 0;
+        let autoSlideTimer = null;
+
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+
+        // FUNGSI PENGGERAK ANIMASI SCROLL
+        function initScrollObserver() {
+            const animatedElements = document.querySelectorAll('.anim-left, .anim-right, .anim-up');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('anim-show');
+                    }
+                });
+            }, {
+                threshold: 0.15
+            });
+
+            animatedElements.forEach(el => observer.observe(el));
+        }
+
+        // ================= LOGIKA BANNER CAROUSEL ================= //
+        function showSlide(index) {
+            const track = document.getElementById('carousel-track');
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.dot');
+
+            if (!track || slides.length === 0) return;
+
+            if (index >= slides.length) slideIndex = 0;
+            if (index < 0) slideIndex = slides.length - 1;
+
+            track.style.transform = `translateX(-${slideIndex * 100}%)`;
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === slideIndex);
+            });
+        }
+
+        function moveSlide(n) {
+            slideIndex += n;
+            showSlide(slideIndex);
+            resetAutoSlide();
+        }
+
+        function currentSlide(n) {
+            slideIndex = n;
+            showSlide(slideIndex);
+            resetAutoSlide();
+        }
+
+        function startAutoSlide() {
+            autoSlideTimer = setInterval(() => {
+                slideIndex++;
+                showSlide(slideIndex);
+            }, 4000);
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideTimer);
+            startAutoSlide();
+        }
+
+        // ================= FETCH DATA UNIT ================= //
+        async function fetchUnit() {
+            const query = encodeURIComponent(`*[_type == "unit"]{namaSekolah, "slug": slug.current, tingkat}`);
+            const url = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${query}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const units = data.result || [];
+
+                const loadingEl = document.getElementById('loading-unit');
+                if(loadingEl) loadingEl.style.display = 'none';
+
+                const container = document.getElementById('unit-container');
+
+                if (units.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color:#777;">Belum ada data unit. Isi via Dashboard Sanity.</p>';
+                    return;
+                }
+
+                const dikelompokkan = {};
+                units.forEach(u => {
+                    const tingkatKey = u.tingkat || 'Umum';
+                    if(!dikelompokkan[tingkatKey]) dikelompokkan[tingkatKey] = [];
+                    dikelompokkan[tingkatKey].push(u);
+                });
+
+                const urutanTingkat = ['SD', 'SMP', 'SMA', 'Umum'];
+
+                urutanTingkat.forEach(tingkat => {
+                    const list = dikelompokkan[tingkat];
+                    if (!list) return;
+
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'unit-group anim-up';
+                    groupDiv.innerHTML = `
+                        <h3>Tingkat ${tingkat}</h3>
+                        <ul class="unit-list">
+                            ${list.map(item => `
+                                <li>
+                                    <a href="unit.html?slug=${item.slug}">
+                                        📍 ${item.namaSekolah}
+                                    </a>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                    container.appendChild(groupDiv);
+                });
+
+                // Re-init observer untuk element unit yang baru dibuat
+                initScrollObserver();
+
+            } catch (e) {
+                const loadingEl = document.getElementById('loading-unit');
+                if(loadingEl) loadingEl.innerText = 'Gagal memuat data unit.';
+            }
+        }
+
+        // ================= FETCH DATA PRESTASI ================= //
+        async function fetchPrestasi() {
+            const query = encodeURIComponent(`*[_type == "prestasi"] | order(_createdAt desc)[0...10]{
+                namaAtlet,
+                kejuaraan,
+                asalUnit,
+                "fotoUrl": fotoAtlet.asset->url
+            }`);
+
+            const url = `https://${PROJECT_ID}.api.sanity.io/v2021-10-21/data/query/${DATASET}?query=${query}`;
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                const prestasis = data.result || [];
+
+                const container = document.getElementById('prestasi-container');
+
+                if (prestasis.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; width:100%; color:#777;">Belum ada data prestasi.</p>';
+                    return;
+                }
+
+                const cardsHTML = prestasis.map(p => `
+                    <div class="card-prestasi">
+                        <img src="${p.fotoUrl || 'https://via.placeholder.com/150'}" alt="${p.namaAtlet}">
+                        <div class="card-info">
+                            <h4>${p.namaAtlet}</h4>
+                            <p>${p.kejuaraan}</p>
+                            <p class="unit-tag">📍 ${p.asalUnit || '-'}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                container.innerHTML = cardsHTML + cardsHTML + cardsHTML;
+
+                startAutoScroll(container);
+
+            } catch (e) {
+                document.getElementById('prestasi-container').innerHTML =
+                    '<p style="text-align:center; width:100%;">Gagal memuat prestasi.</p>';
+                console.error(e);
+            }
+        }
+
+        function startAutoScroll(container) {
+            if (autoScrollInterval) clearInterval(autoScrollInterval);
+
+            const speed = 1;
+
+            autoScrollInterval = setInterval(() => {
+                container.scrollLeft += speed;
+
+                if (container.scrollLeft >= (container.scrollWidth / 3) * 2) {
+                    container.scrollLeft = container.scrollLeft - (container.scrollWidth / 3);
+                }
+            }, 20);
+        }
+
+        // ================= JALANKAN SAAT DOM READY ================= //
+        document.addEventListener('DOMContentLoaded', () => {
+            initScrollObserver();
+            startAutoSlide();
+            fetchUnit();
+            fetchPrestasi();
+        });
+    </script>
+</body>
+</html>
